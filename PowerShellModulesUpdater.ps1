@@ -57,8 +57,6 @@ $AcceptLicenses = [bool] $true
 ## Skip Publisher Check - Security, checks signing of the module against alleged publisher.
 $SkipPublisherCheck = [bool] $true
 
-
-
 # Action - What Options Would You Like To Perform
 $InstallMissingModules = [bool] $true
 $InstallMissingSubModules = [bool] $true
@@ -66,8 +64,6 @@ $InstallUpdatedModules = [bool] $true
 $UninstallOutdatedModules = [bool] $true
 $UninstallUnwantedModules = [bool] $true
 
-       
- 
 # List of modules
 ## Modules you want to install and keep installed
 $ModulesWanted = [string[]]$(
@@ -105,20 +101,24 @@ $ModulesWanted = [string[]]$(
     # 'Optimized.Mga', # Bas Wijdenes. Microsoft Graph batch operations.
     'PartnerCenter', # Microsoft. Used for interacting with PartnerCenter API.
     'PackageManagement', # Microsoft. Used for installing/ uninstalling modules.
+    'PnP.PowerShell', # Microsoft. Used for managing SharePoint Online.
+    'Pester', # PowerShell testing
     # 'platyPS', # Microsoft. Used for converting markdown to PowerShell XML external help files.
     # 'PolicyFileEditor', # Microsoft. Used for local group policy / gpedit.msc.
     'PoshRSJob', # Boe Prox. Used for parallel execution of PowerShell.
     'PowerShellGet', # Microsoft. Used for installing updates.
     'PSIntuneAuth', # Nickolaj Andersen. Get auth token to Intune.
+    'PSLogging', # Logging module
     # 'PSPKI', # Vadims Podans. Used for infrastructure and certificate management.
     'PSReadLine', # Microsoft. Used for helping when scripting PowerShell.
     'PSScriptAnalyzer', # Microsoft. Used to analyze PowerShell scripts to look for common mistakes + give advice.
     'PSWindowsUpdate', # Michal Gajda. Used for updating Windows.
     # 'RunAsUser', # Kelvin Tegelaar. Allows running as current user while running as SYSTEM using impersonation.
     'SetBIOS', # Damien Van Robaeys. Used for setting BIOS settings for Lenovo, Dell and HP.
-    'PnP.PowerShell', # Microsoft. Used for managing SharePoint Online.
+    'Terminal-Icons', # Terminal Icons
     # 'SpeculationControl', # Microsoft, by Matt Miller. To query speculation control settings (Meltdown, Spectr)
-    'WindowsAutoPilotIntune'                  # Michael Niehaus @ Microsoft. Used for Intune AutoPilot stuff.
+    'WindowsAutoPilotIntune', # Michael Niehaus @ Microsoft. Used for Intune AutoPilot stuff.
+    'Microsoft.PowerApps.Administration.PowerShell'
 )
     
 ## Modules you don't want - Will Remove Every Related Module, for AzureRM for instance will also search for AzureRM.*
@@ -1332,7 +1332,7 @@ else {
         if (-not $VersionInstalled -or $VersionInstalled -lt $VersionAvailable) {           
             Write-Information -MessageData ('{0}Not installed, or newer version available. Installing...' -f ("`t"))
             # Install module
-            $null = Install-Package -Source 'PSGallery' -Name $ModuleName -Scope $Script:Scope -Verbose:$false -Debug:$false -Confirm:$false -Force -ErrorAction 'Stop' 3>$null
+            $null = Install-Package -Source 'PSGallery' -Name $ModuleName -Scope $Script:Scope -AllowClobber -Verbose:$false -Debug:$false -Confirm:$false -Force -ErrorAction 'Stop' 3>$null
             # Check success
             $Success = [bool]$($?)
             Write-Information -MessageData ('{0}{0}Success? {1}' -f ("`t", $Success.ToString()))
